@@ -74,7 +74,7 @@
             </Button>
          </children>
       </HBox>
-      <TableView fx:id="tablaCoches" onMouseReleased="#onClic" prefHeight="200.0">
+      <TableView fx:id="tablaMultas" onMouseReleased="#onClic" prefHeight="200.0">
         <columns>
           <TableColumn fx:id="colMatricula" prefWidth="75.0" text="Matricula" />
           <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />

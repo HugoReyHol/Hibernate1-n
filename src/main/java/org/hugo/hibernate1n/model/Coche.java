@@ -1,12 +1,13 @@
 package org.hugo.hibernate1n.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
 @Table(name = "Coche")
-public class Coche {
+public class Coche implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

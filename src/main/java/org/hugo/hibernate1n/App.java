@@ -9,7 +9,7 @@ import org.hugo.hibernate1n.util.R;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(R.getUI("coches.fxml"));

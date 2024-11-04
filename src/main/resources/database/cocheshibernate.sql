@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS multa (
   PRIMARY KEY (id_multa)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 ;
 
-
 INSERT INTO Multa (matricula, precio, fecha)
 VALUES ('1234AAA', 200, '2023-12-12'),
        ('1234AAA', 700, '2023-12-13'),

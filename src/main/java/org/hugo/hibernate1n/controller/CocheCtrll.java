@@ -4,23 +4,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hugo.hibernate1n.dao.CocheDAOImpl;
 import org.hugo.hibernate1n.model.Coche;
 import org.hugo.hibernate1n.util.HibernateUtil;
+import org.hugo.hibernate1n.util.R;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 
 public class CocheCtrll implements Initializable {
@@ -132,6 +138,22 @@ public class CocheCtrll implements Initializable {
         cocheCargado = c;
 
         System.out.println(c.getId_coche());
+    }
+
+    public void onMultas(ActionEvent actionEvent) throws IOException {
+        if (cocheCargado == null) return;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(R.getUI("multas.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        MultasCtrll multasCtrll = fxmlLoader.getController();
+        multasCtrll.setMultas(cocheCargado, session);
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Multas");
+        stage.showAndWait();
+
     }
 
     public void close() {

@@ -5,148 +5,133 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hugo.hibernate1n.dao.CocheDAOImpl;
+import org.hugo.hibernate1n.dao.MultaDAOImpl;
 import org.hugo.hibernate1n.model.Coche;
-import org.hugo.hibernate1n.util.HibernateUtil;
+import org.hugo.hibernate1n.model.Multa;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
 public class MultasCtrll implements Initializable {
 
     @FXML
-    private TextField inMatricula, inMarca, inModelo;
+    private TextField inMatricula, inPrecio;
 
     @FXML
-    private ChoiceBox<String> inTipo;
+    private DatePicker inFecha;
 
     @FXML
-    private TableView<Coche> tablaCoches;
+    private TableView<Multa> tablaMultas;
 
     @FXML
-    private TableColumn<Coche, String> colMatricula, colMarca, colModelo, colTipo;
+    private TableColumn<Multa, String> colMatricula;
+    @FXML
+    private TableColumn<Multa, Double> colPrecio;
+    @FXML
+    private TableColumn<Multa, LocalDate> colFecha;
 
-    private final ObservableList<Coche> coches = FXCollections.observableArrayList();
-    private final ObservableList<String> tipos = FXCollections.observableArrayList();
+    private final ObservableList<Multa> multas = FXCollections.observableArrayList();
 
-    private Coche cocheCargado = null;
+    private Multa multaCargada = null;
 
-    private final CocheDAOImpl cocheDAO = new CocheDAOImpl();
+    private final MultaDAOImpl multaDAO = new MultaDAOImpl();
 
-    private final SessionFactory factory = HibernateUtil.getSessionFactory();
-    private final Session session = HibernateUtil.getSession();
+    private Session session;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
-        colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
-        colModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 
-        coches.addAll(cocheDAO.listarCoches(session));
-        tablaCoches.setItems(coches);
+    }
 
-        String[] listaTipos = new String[]{"Familiar", "Deportivo", "Todo Terreno"};
+    public void setMultas(Coche cocheCargado, Session session) {
+        this.session = session;
 
-        tipos.addAll(new ArrayList<>(List.of(listaTipos)));
-        inTipo.setItems(tipos);
+        multas.addAll(multaDAO.listar(cocheCargado, session));
+        tablaMultas.setItems(multas);
 
     }
 
 
     public void onLimpiar(ActionEvent actionEvent) {
         inMatricula.setText("");
-        inMarca.setText("");
-        inModelo.setText("");
-        inTipo.setValue("");
-        cocheCargado = null;
-        tablaCoches.getSelectionModel().clearSelection();
+        inPrecio.setText("");
+        inFecha.setValue(null);
+        multaCargada = null;
+        tablaMultas.getSelectionModel().clearSelection();
     }
 
     public void onGuardar(ActionEvent actionEvent) {
-        Coche c = new Coche();
+        Multa m = new Multa();
 
-        comprobarEntrada(c);
+        comprobarEntrada(m);
 
-        if (!cocheDAO.guardarCoche(c, session)) return;
+        if (!multaDAO.guardar(m, session)) return;
 
+        multaCargada = m;
 
-        cocheCargado = c;
-
-        coches.add(c);
-        tablaCoches.getSelectionModel().select(c);
+        multas.add(m);
+        tablaMultas.getSelectionModel().select(m);
 
     }
 
     public void onActualizar(ActionEvent actionEvent) {
-        if (cocheCargado == null) {
+        if (multaCargada == null) {
             return;
         }
 
-        comprobarEntrada(cocheCargado);
+        comprobarEntrada(multaCargada);
 
-        cocheDAO.actualizarCoche(cocheCargado, session);
+        multaDAO.actualizar(multaCargada, session);
 
-        tablaCoches.refresh();
+        tablaMultas.refresh();
     }
 
     public void onEliminar(ActionEvent actionEvent) {
-        if (cocheCargado == null){
+        if (multaCargada == null){
             return;
         }
 
-        cocheDAO.eliminarCoche(cocheCargado, session);
+        multaDAO.eliminar(multaCargada, session);
 
-        coches.remove(cocheCargado);
+        multas.remove(multaCargada);
 
-        cocheCargado = null;
+        multaCargada = null;
 
         onLimpiar(actionEvent);
 
     }
 
     public void onClic(MouseEvent mouseEvent) {
-        Coche c = tablaCoches.getSelectionModel().getSelectedItem();
+        Multa m = tablaMultas.getSelectionModel().getSelectedItem();
 
-        if (c == null){
+        if (m == null){
             return;
         }
 
-        inMatricula.setText(c.getMatricula());
-        inMarca.setText(c.getMarca());
-        inModelo.setText(c.getModelo());
-        inTipo.setValue(c.getTipo());
+        inMatricula.setText(m.getMatricula());
+        inPrecio.setText(String.valueOf(m.getPrecio()));
+        inFecha.setValue(m.getFecha());
 
-        cocheCargado = c;
+        multaCargada = m;
 
-        System.out.println(c.getId_coche());
+        System.out.println(m.getId_multa());
     }
 
-    public void close() {
-        System.out.println("Saliendo de la aplicación");
+    private void comprobarEntrada(Multa m) {
+        m.setPrecio(Double.parseDouble(inPrecio.getText()));
+        m.setFecha(inFecha.getValue());
 
-        session.close();
-        factory.close();
-
-    }
-
-    private void comprobarEntrada(Coche c) {
-        c.setMarca(inMarca.getText().isEmpty() ? null : inMarca.getText());
-        c.setMatricula(inMatricula.getText().isEmpty() ? null : inMatricula.getText());
-        c.setModelo(inModelo.getText().isEmpty() ? null : inModelo.getText());
-        c.setTipo(inTipo.getValue());
+//        c.setMatricula(inMatricula.getText().isEmpty() ? null : inMatricula.getText());
 
     }
 }
