@@ -9,14 +9,14 @@ import org.hugo.hibernate1n.util.AlertUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultaDAOImpl implements DAO<Multa>{
+public class MultaDAOImpl implements MultaDAO{
     @Override
-    public boolean guardar(Multa elemento, Session session) {
+    public boolean guardar(Multa multa, Session session) {
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            session.save(elemento);
+            session.save(multa);
             transaction.commit();
 
         } catch (Exception e) {
@@ -32,12 +32,12 @@ public class MultaDAOImpl implements DAO<Multa>{
     }
 
     @Override
-    public void actualizar(Multa elemento, Session session) {
+    public void actualizar(Multa multa, Session session) {
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(elemento);
+            session.saveOrUpdate(multa);
             transaction.commit();
 
         } catch (Exception e) {
@@ -49,12 +49,12 @@ public class MultaDAOImpl implements DAO<Multa>{
     }
 
     @Override
-    public void eliminar(Multa elemento, Session session) {
+    public void eliminar(Multa multa, Session session) {
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            Coche c = session.get(Coche.class, elemento.getId_multa());
+            Coche c = session.get(Coche.class, multa.getId_multa());
             session.delete(c);
             transaction.commit();
 
@@ -66,30 +66,13 @@ public class MultaDAOImpl implements DAO<Multa>{
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Multa> listar(Session session) {
+    public List<Multa> listar(Coche coche, Session session) {
         Transaction transaction = null;
         List<Multa> multas = new ArrayList<>();
 
         try {
             transaction = session.beginTransaction();
-            multas = session.createQuery("from Multa").list();
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-        }
-
-        return multas;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Multa> listar(Coche elemento, Session session) {
-        Transaction transaction = null;
-        List<Multa> multas = new ArrayList<>();
-
-        try {
-            transaction = session.beginTransaction();
-            multas = session.createQuery("from Multa where matricula = \'" + elemento.getMatricula() + "\'").list();
+            multas = session.createQuery("from Multa where matricula = \'" + coche.getMatricula() + "\'").list();
             transaction.commit();
 
         } catch (Exception e) {
