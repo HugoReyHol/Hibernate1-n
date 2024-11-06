@@ -60,11 +60,13 @@ public class MultasCtrll implements Initializable {
         multas.addAll(multaDAO.listar(cocheCargado, session));
         tablaMultas.setItems(multas);
 
+        inMatricula.setText(cocheCargado.getMatricula());
+
     }
 
 
     public void onLimpiar(ActionEvent actionEvent) {
-        inMatricula.setText("");
+        inMatricula.setText(cocheCargado.getMatricula());
         inPrecio.setText("");
         inFecha.setValue(null);
         multaCargada = null;
