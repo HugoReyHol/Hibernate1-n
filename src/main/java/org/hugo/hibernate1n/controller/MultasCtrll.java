@@ -12,6 +12,8 @@ import org.hibernate.Session;
 import org.hugo.hibernate1n.dao.MultaDAOImpl;
 import org.hugo.hibernate1n.model.Coche;
 import org.hugo.hibernate1n.model.Multa;
+import org.hugo.hibernate1n.util.HibernateUtil;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -42,7 +44,7 @@ public class MultasCtrll implements Initializable {
 
     private final MultaDAOImpl multaDAO = new MultaDAOImpl();
 
-    private Session session;
+    private Session session = HibernateUtil.getSession();
 
 
     @Override
@@ -53,8 +55,7 @@ public class MultasCtrll implements Initializable {
 
     }
 
-    public void setMultas(Coche cocheCargado, Session session) {
-        this.session = session;
+    public void setMultas(Coche cocheCargado) {
         this.cocheCargado = cocheCargado;
 
         multas.addAll(multaDAO.listar(cocheCargado, session));

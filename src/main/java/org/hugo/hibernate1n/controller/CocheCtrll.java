@@ -146,7 +146,7 @@ public class CocheCtrll implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
 
         MultasCtrll multasCtrll = fxmlLoader.getController();
-        multasCtrll.setMultas(cocheCargado, session);
+        multasCtrll.setMultas(cocheCargado);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
