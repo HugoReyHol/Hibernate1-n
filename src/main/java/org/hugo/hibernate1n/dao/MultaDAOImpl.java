@@ -71,7 +71,7 @@ public class MultaDAOImpl implements MultaDAO{
 
         try {
             transaction = session.beginTransaction();
-            multas = session.createQuery("from Multa where matricula = \'" + coche.getMatricula() + "\'").list();
+            multas = session.createQuery("from Multa where matricula = '" + coche.getMatricula() + "'").list();
             transaction.commit();
 
         } catch (Exception e) {
