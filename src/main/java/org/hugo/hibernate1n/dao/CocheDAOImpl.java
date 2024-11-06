@@ -51,8 +51,7 @@ public class CocheDAOImpl implements CocheDAO {
 
         try {
             transaction = session.beginTransaction();
-            Coche c = session.get(Coche.class, coche.getId_coche());
-            session.delete(c);
+            session.delete(coche);
             transaction.commit();
 
         } catch (Exception e) {

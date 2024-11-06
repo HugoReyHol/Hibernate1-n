@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hugo.hibernate1n.dao.MultaDAOImpl;
 import org.hugo.hibernate1n.model.Coche;
 import org.hugo.hibernate1n.model.Multa;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -39,6 +38,7 @@ public class MultasCtrll implements Initializable {
     private final ObservableList<Multa> multas = FXCollections.observableArrayList();
 
     private Multa multaCargada = null;
+    private Coche cocheCargado = null;
 
     private final MultaDAOImpl multaDAO = new MultaDAOImpl();
 
@@ -55,6 +55,7 @@ public class MultasCtrll implements Initializable {
 
     public void setMultas(Coche cocheCargado, Session session) {
         this.session = session;
+        this.cocheCargado = cocheCargado;
 
         multas.addAll(multaDAO.listar(cocheCargado, session));
         tablaMultas.setItems(multas);
@@ -128,10 +129,9 @@ public class MultasCtrll implements Initializable {
     }
 
     private void comprobarEntrada(Multa m) {
-        m.setPrecio(Double.parseDouble(inPrecio.getText()));
+        m.setCoche(cocheCargado);
+        m.setPrecio(inPrecio.getText().isEmpty() ? null : Double.parseDouble(inPrecio.getText()));
         m.setFecha(inFecha.getValue());
-
-//        c.setMatricula(inMatricula.getText().isEmpty() ? null : inMatricula.getText());
 
     }
 }

@@ -54,8 +54,7 @@ public class MultaDAOImpl implements MultaDAO{
 
         try {
             transaction = session.beginTransaction();
-            Coche c = session.get(Coche.class, multa.getId_multa());
-            session.delete(c);
+            session.delete(multa);
             transaction.commit();
 
         } catch (Exception e) {

@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,13 +21,11 @@ import org.hugo.hibernate1n.dao.CocheDAOImpl;
 import org.hugo.hibernate1n.model.Coche;
 import org.hugo.hibernate1n.util.HibernateUtil;
 import org.hugo.hibernate1n.util.R;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 
 public class CocheCtrll implements Initializable {
@@ -150,6 +149,7 @@ public class CocheCtrll implements Initializable {
         multasCtrll.setMultas(cocheCargado, session);
 
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.setTitle("Multas");
         stage.showAndWait();

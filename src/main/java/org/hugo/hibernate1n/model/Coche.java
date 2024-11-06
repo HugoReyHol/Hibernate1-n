@@ -70,4 +70,12 @@ public class Coche implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public List<Multa> getMultas() {
+        return multas;
+    }
+
+    public void setMultas(List<Multa> multas) {
+        this.multas = multas;
+    }
 }

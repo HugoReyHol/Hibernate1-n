@@ -25,7 +25,7 @@
                </font>
             </Label>
             <Pane HBox.hgrow="ALWAYS" />
-            <TextField fx:id="inMatricula" />
+            <TextField fx:id="inMatricula" editable="false" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="30.0" maxWidth="250.0">

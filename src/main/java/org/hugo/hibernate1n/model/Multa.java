@@ -11,7 +11,7 @@ public class Multa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_multa;
-    private double precio;
+    private Double precio;
     private LocalDate fecha;
 
     @ManyToOne
@@ -21,7 +21,7 @@ public class Multa {
     public Multa() {
     }
 
-    public Multa(double precio, LocalDate fecha, Coche coche) {
+    public Multa(Double precio, LocalDate fecha, Coche coche) {
         this.precio = precio;
         this.fecha = fecha;
         this.coche = coche;
@@ -35,11 +35,11 @@ public class Multa {
         this.id_multa = id_multa;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
